@@ -42,6 +42,34 @@ function App() {
     }
   }
 
+  function handleDelete(id) {
+    console.log("Delete requested for id: ", id);
+  }
 
+  return (
+    <div>
+      <header className="site-header">
+        <h1>Stockly</h1>
+        <p className="tagline">Know what's in stock, before you run out</p>
+      </header>
 
+      <section className="items-section">
+        <h2>Current Inventory</h2>
+
+        {/* //If the value on the left is true, show what's on the right. */}
+        {loading && <p>Loading Inventory...</p>}
+        {error && <p className="error-message">{error}</p>}
+
+        {!loading && !error && (
+          <div className="items-grid">
+            {items.map((item) => (
+              <ItemCard key={item.id} item={item} onDelete={handleDelete} />
+            ))}
+          </div>
+        )}
+      </section>
+    </div>
+  );
 }
+
+export default App;
