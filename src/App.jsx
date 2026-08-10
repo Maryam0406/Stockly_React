@@ -76,6 +76,8 @@ function App() {
         <p className="tagline">Know what's in stock, before you run out</p>
       </header>
 
+      <AddItemForm onAddItem={handleAddItem} />
+
       <section className="items-section">
         <h2>Current Inventory</h2>
 
