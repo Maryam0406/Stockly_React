@@ -4,7 +4,7 @@ import AddItemForm from './components/AddItemForm';
 import './App.css';
 
 //stores the url of ur backend api
-const API_URL = 'https://localhost:5000/api/items';
+const API_URL = 'http://localhost:5000/api/items';
 
 function App() {
   //creates a state varibale called items
@@ -43,12 +43,25 @@ function App() {
     }
   }
 
-  function handleDelete(id) {
-    console.log("Delete requested for id: ", id);
-  }
+  async function handleDelete(id) {
+    try {
+      const response = await fetch(`${API_URL}/${id}`, {
+        method: 'DELETE',
+      });
 
+      if (!response.ok) {
+        throw new Error(`Server responded with status ${response.status}`);
+      }
+
+      await fetchItems(); // Refresh the list after deletion
+
+  } catch (err) {
+      console.error("Error deleting item: ", err);
+      alert('Could not delete item. Please try again');     
+  }
+}    
   //this function sends the new item to the backend api using the post request and wiats for the response
-  async function AddNewItem(newItem) {
+  async function handleAddItem(newItem) {
     try {
       //fetch is the js function used to make http requests
       const response = await fetch(API_URL, {
@@ -59,7 +72,7 @@ function App() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        return { success: false, error: errorData.message || 'Failed to add item' };
+        return { success: false, error: errorData.error || 'Failed to add item' };
       }
 
       await fetchItems(); // Refresh the list after adding
