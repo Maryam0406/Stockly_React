@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import ItemCard from './components/ItemCard';
+import AddItemForm from './components/AddItemForm';
 import './App.css';
 
 //stores the url of ur backend api
@@ -46,6 +47,28 @@ function App() {
     console.log("Delete requested for id: ", id);
   }
 
+  //this function sends the new item to the backend api using the post request and wiats for the response
+  async function AddNewItem(newItem) {
+    try {
+      //fetch is the js function used to make http requests
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(newItem),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        return { success: false, error: errorData.message || 'Failed to add item' };
+      }
+
+      await fetchItems(); // Refresh the list after adding
+      return { success: true};
+    } catch (err) {
+      console.error("Error adding item: ", err);
+      return { success: false, error: 'Network error. Is the API running' };
+    }
+  }
   return (
     <div>
       <header className="site-header">
