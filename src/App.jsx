@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import ItemCard from './components/ItemCard';
 import AddItemForm from './components/AddItemForm';
-import './App.css';
 
 //stores the url of ur backend api
 const API_URL = 'http://localhost:5000/api/items';
